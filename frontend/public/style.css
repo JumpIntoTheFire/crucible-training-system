@@ -1,0 +1,435 @@
+/*  ===============================================================
+    🌱  Root-Level CSS Variables (Custom Properties)
+    ===============================================================
+    • Define once, use everywhere.
+    • Change here and the entire site updates.
+*/
+:root {
+  /* Primary brand colors */
+  --primary-color: #000000;    /* pure black, used for backgrounds */
+  --secondary-color: #d6e019;  /* bright yellow, your accent tone */
+  --tertiary-color: #d8981e;   /* warm orange, another accent */
+
+  /* Font stacks: shorthand names for your font-family lists */
+  --font-heading: 'Norwester', sans-serif;  /* headings/titles */
+  --font-base: 'Roboto Slab', serif;        /* body text, paragraphs */
+  --font-ui: 
+    system-ui,          /* default UI font on most modern systems */
+    -apple-system,      /* San Francisco on Apple devices */
+    BlinkMacSystemFont, /* Chrome on macOS */
+    'Segoe UI', Roboto, Helvetica, Arial, sans-serif, /* Windows & web fallbacks */
+    'Apple Color Emoji','Segoe UI Emoji'; /* emoji fonts */
+}
+
+
+/*  ===============================================================
+    🔤  Global Page Styles
+    ===============================================================
+*/
+
+/* 
+  html element: ensure the page can stretch to full height 
+  so your black background never stops. 
+*/
+html {
+  height: 100%; /* span entire viewport height */
+}
+
+body {
+  /* 
+    1. Fill the entire viewport with black 
+    2. Remove default browser margins so edges are flush 
+    3. Add padding so content doesn’t hug the very edge 
+    4. Center all inline content (text/images) by default 
+  */
+  min-height: 100vh;                   /* body is at least viewport height */
+  background-color: var(--primary-color); /* black background */
+  margin: 0;                           /* kill default white border */
+  padding: 20px;                       /* cushion inside edges */
+  text-align: center;                  /* center-align all text & inline elements */
+  
+  /* 
+    Font + text styling 
+    • Use your base font for most text 
+    • Light yellow/orange on black for contrast 
+  */
+  font-family: var(--font-base); /* serif font for readability */
+  color: var(--secondary-color); /* light yellow text for contrast */
+  line-height: 1.6;                    /* nice reading line-height */
+}
+
+
+/* 
+  A wrapper you can add around all your <main> content 
+  to keep it from ever being wider than 960px 
+  and center-it horizontally. 
+*/
+.container {
+  max-width: 960px;     /* limit width on large screens */
+  margin: 0 auto;       /* auto left/right margins = horizontal center */
+  padding: 0 20px;      /* small side padding inside container */
+}
+
+
+/* 
+  main element: use Flexbox to stack children and center them 
+  • flex-direction: column → vertical layout 
+  • align-items: center → child blocks are centered horizontally 
+*/
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* text-align: center is inherited from body, but you could also set it here */
+}
+
+@media (max-width: 768px) {
+  .image-grid {
+    display: flex; /* switch to flexbox on small screens */
+    flex-direction: column; /* stack images vertically on small screens */
+    align-items: center; /* center images horizontally */
+    height: auto;         /* let it grow naturally */
+    width: 100%;          /* full width of container */
+    gap: 1rem;            /* space between images */
+  }
+
+  .image-grid img {
+    width: 80%;           /* scale down for mobile */
+    max-width: 300px;     /* prevent oversized images */
+    height: auto;         /* preserve aspect ratio */
+  }
+
+  /* remove manual grid-row and column positioning */
+  .above, .the-one, .below {
+    grid-row: unset; 
+    grid-column: unset; 
+    margin: 0;
+  }
+}
+.image-grid img {
+  transition: all 0.4s ease-in-out; /* smooth scaling on hover */
+}
+
+
+
+/*  ===============================================================
+    🖼️  Image Grid Layout
+    ===============================================================
+    • Three images in a grid layout
+    • Top left, center middle, bottom right
+*/
+
+.image-grid {
+  display: grid; /* use CSS Grid for layout */
+  grid-template-columns: repeat(3, 1fr); /* 3 equal horizontal zones */
+  grid-template-rows: auto auto auto; /* natural row height based on content */
+  gap: 0px; /* no space between grid cells */
+  width: 100%; /* full width of container */
+  max-width: 960px; /* limit to 960px max width */
+  margin: 0 auto; /* center container */
+}
+
+/* Top-left image */
+.above {
+  height: 400px; /* fixed height for consistency */
+  grid-column: 1; /* first column */
+  grid-row: 1; /* first row */
+  align-self: end; /* align image to bottom of its row */
+  border-radius: 150px 150px 0px 150px; /* rounded corners */
+  background-color: var(--tertiary-color); /* yellow background for emphasis */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);  /* subtle shadow for depth */
+  padding: 5px; /* space around image */
+  object-fit: cover; /* cover the entire area without distortion */
+  border: #d6e019 solid 2px; /* yellow border for emphasis */
+
+
+}
+
+/* Middle-centered image */
+.the-one {
+  grid-column: 2; /* second column */
+  grid-row: 2;  /* second row */
+  justify-self: center; /* center image horizontally */
+  align-self: start; /* anchor logo to top of its row */
+  border-radius: 50%; /* circular shape */
+  background-color: var(--tertiary-color); /* yellow background for emphasis */
+  padding:5px; /* space around image */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* subtle shadow for depth */
+  width: 300px; /* fixed width for logo */
+  height: 300px; /* fixed height for logo */
+  border: #d6e019 solid 2px; /* yellow border for emphasis */
+
+}
+
+/* Bottom-right image */
+.below {
+  height: 400px; /* fixed height for consistency */
+  grid-column: 3; /* third column */
+  grid-row: 3; /* third row */
+  justify-self: end; /* align image to right of its row */
+  border-radius: 0 150px 150px 150px; /* rounded corners */
+  background-color: var(--tertiary-color); /* yellow background for emphasis */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);    /* subtle shadow for depth */
+  padding: 5px;  /* space around image */
+  object-fit: cover; /* cover the entire area without distortion */
+  border: #d6e019 solid 2px; /* yellow border for emphasis */
+
+}
+
+/* =============================
+   🖼️  Pillar Image Styles
+   ============================= */
+
+   .pillar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* optional: centers them horizontally */
+}
+
+
+
+
+/* Pillar images: use flexbox to stack images vertically */
+img.pillar {
+  border-radius: 150px 150px 150px 150px; /* rounded corners for a softer look */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* subtle shadow for depth */
+  flex-direction: column; /* allow images to be in a row */
+  height: 450px; /* maintain aspect ratio */
+  display: inline-block; /* allow multiple images in a row */
+  width: 300px; /* fixed width for pillar images */
+  height: 300px; /* maintain aspect ratio */
+  margin: 10px; /* space around each pillar image */
+  border-radius: 10px; /* rounded corners for a softer look */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* subtle shadow for depth */
+  object-fit: cover; /* cover the entire area without distortion */
+  border: var(--tertiary-color) solid 5px; /* yellow border for emphasis */
+  padding: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* subtle shadow for depth */
+  border: #d6e019 solid 2px; /* yellow border for emphasis */
+  background-color: var(--tertiary-color);
+
+    
+
+}
+
+
+/* =============================
+   🌐 Navigation Styles
+   ============================= */
+
+.nav-list {
+  display: flex;
+  justify-content: center;
+  gap: 15rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list a {
+  font-family: var(--font-ui);
+  background-color: var(--secondary-color); /* yellow */
+  color: var(--primary-color);              /* black */
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--secondary-color);
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+}
+
+/* Hover + focus for nav links */
+.nav-list a:hover,
+.nav-list a:focus {
+  color: var(--tertiary-color);             /* orange */
+  border: #000000 solid 2px; /* black border on hover */
+}
+
+
+/* =============================
+   📂 Dropdown Styles
+   ============================= */
+
+/* Wrap dropdown for relative positioning */
+.dropdown {
+  position: relative;
+}
+
+/* Hidden submenu container */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%; /* appear below the parent */
+  left: 0;
+  background-color: var(--secondary-color); /* yellow */
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  list-style: none;
+  margin: 0.5rem 0 0 0;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+/* Show submenu on hover or focus */
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+  display: block;
+}
+
+/* Submenu links */
+.dropdown-menu li a {
+  display: block;
+  padding: 0.5rem;
+  font-family: var(--font-ui);
+  color: var(--primary-color);               /* readable black text */
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Submenu hover/focus */
+.dropdown-menu li a:hover,
+.dropdown-menu li a:focus {
+  background-color: var(--tertiary-color);   /* orange hover */
+  color: var(--primary-color);               /* black text on orange */
+}
+
+
+/* =============================
+   🛠️ Utility Classes
+   ============================= */
+
+.text-center {
+  text-align: center;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}
+
+
+.contact {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.contact h1 {
+  font-size: var(--heading-xl);
+  margin-bottom: 1rem;
+}
+
+.contact-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.contact-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.btn-submit {
+  background-color: var(--brand-primary, #333);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+.hero {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  color: var(--tertiary-color);
+  margin-top: 0.5rem;
+}
+
+.package-highlights {
+  background-color: var(--secondary-color);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 2rem;
+  color: var(--primary-color);
+}
+
+.package-highlights ul {
+  list-style: none;
+  padding: 0;
+}
+
+.package-highlights li {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.cta {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.btn-submit {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: var(--tertiary-color);
+  color: var(--primary-color);
+}
+
+/* Add this to your css/style.css file */
+
+.form-status {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Success message */
+.form-status.success {
+  background-color: #e6f9ec;
+  color: #2e7d32;
+  border: 1px solid #2e7d32;
+}
+
+/* Error message */
+.form-status.error {
+  background-color: #fdecea;
+  color: #c62828;
+  border: 1px solid #c62828;
+}
+
+
+/* css/style.css */
+.form-status { margin-top: 0.75rem; font-size: 0.95rem; }
+.form-status.success { color: #0a7d22; }
+.form-status.error { color: #b00020; }

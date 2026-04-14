@@ -1,0 +1,191 @@
+CHANGELOG — The Crucible Training System (CTS)
+Format: [YYYY-MM-DD HH:MM] Description
+Order: Oldest at top, newest at bottom.
+================================================================================
+
+[2025-09-16 00:00] Initial project scaffold. Created directory structure:
+  PT-Website/backend/, frontend/, public/, src/components/
+  Core components created: BasicPage, ElitePage, HomePage, Layout,
+  NotFound, PremiumPage, UltraPage.
+
+[2025-09-16 00:00] Created backend entry file main.py with FastAPI root route.
+
+[2025-09-16 00:00] Validated server launch via Uvicorn.
+
+[2025-09-16 00:00] Deleted unused files: new.jsx and App.css.
+
+[2025-09-16 00:00] Manually tested POST /contact endpoint using curl.
+  Sent JSON payload with name, email, message fields.
+  FastAPI parsed request, validated input, and returned expected success response:
+  {"detail": "Message received. We'll be in touch!"}
+
+[2025-09-16 00:00] Added full React contact form to ContactPage.jsx with POST
+  integration to FastAPI /contact endpoint.
+
+[2025-09-16 00:00] Enabled CORS in main.py to allow frontend on localhost:5173
+  to access backend endpoints.
+
+[2025-09-16 00:00] Resolved frontend submission error after enabling CORS.
+  Verified successful POST from React contact form to FastAPI with live response.
+
+[2025-09-16 00:00] Verified contact form submission persistence in PostgreSQL.
+  Confirmed row insertion into public.contacts table of cts_db after POST.
+
+[2025-09-18 00:00] Resolved virtual environment lock-in by restarting CMD session.
+
+[2025-09-19 00:00] Resolved corrupted Python 3.13.7 installation:
+  - Attempted uninstall via Control Panel and PowerShell (failed, error 0x80070643)
+  - Manually deleted AppData folders and registry keys
+  - Used Revo Uninstaller to forcibly remove Python 3.13.7 remnants
+
+[2025-09-19 00:00] Installed Python 3.11.7 cleanly from python.org.
+  Enabled PATH and pip. Verified via `python --version` and `pip --version`.
+
+[2025-09-19 00:00] Rebuilt virtual environment with Python 3.11.7.
+  Deleted old .venv, created new one, activated and upgraded pip 23.2.1 → 25.2.
+
+[2025-09-19 00:00] Installed backend dependencies in new virtual environment:
+  fastapi, uvicorn, sqlalchemy==2.0.43, psycopg2-binary==2.9.10,
+  python-dotenv==1.1.1, greenlet==3.2.4
+
+[2025-09-19 00:00] Added GET /exercises endpoint with tag/muscle filtering.
+  Created routes/exercises.py, updated models.py, created schemas package.
+
+[2025-09-19 00:00] Fixed missing ARRAY and Text imports in models.py to enable
+  PostgreSQL array columns for exercise metadata.
+
+[2025-09-19 00:00] Created backend/schemas/exercises.py and __init__.py.
+  Initialized schemas package to support modular schema imports.
+
+[2025-09-19 00:00] Resolved ModuleNotFoundError by running uvicorn from project
+  root and treating backend as a package with backend.module import paths.
+
+[2025-09-20 00:00] Resolved Pylance import errors by locking VS Code to .venv
+  interpreter, restarting language server, enforcing workspace settings.json.
+
+[2025-09-20 00:00] Moved schemas/ into backend/ to resolve import errors and
+  align with FastAPI package structure.
+
+[2025-09-20 00:00] Reinstalled backend dependencies after virtual environment
+  reset. Restored FastAPI, SQLAlchemy, and Pydantic packages.
+
+[2025-09-20 00:00] Resolved uvicorn command error by activating .venv before
+  server launch. Confirmed environment isolation and reproducibility.
+
+[2025-09-20 00:00] Fixed syntax errors and import paths in exercises.py and
+  init_db.py to use full backend.module syntax throughout.
+
+[2025-09-20 00:00] Defined get_db() in init_db.py to provide FastAPI-compatible
+  database session dependency.
+
+[2025-09-20 00:00] Resolved SQLAlchemy ProgrammingError by renaming PostgreSQL
+  columns to match model casing (primaryMuscles, secondaryMuscles).
+
+[2025-09-20 00:00] Validated GET /exercises endpoint with curl. Returned empty
+  list (no data yet). Confirmed schema, model, and router integration.
+
+[2025-09-20 00:00] Seeded exercises table with Deadlift entry. Validated full
+  GET /exercises flow from DB to curl response.
+
+[2025-09-20 00:00] Scaffolded ingest_exercises.py to load structured JSON and
+  image metadata from exercise folders.
+
+[2025-09-21 00:00] Added startImage and endImage path injection to ingestion
+  pipeline. Image metadata now stored alongside exercise entries.
+
+[2025-09-21 00:00] Enabled ingestion script execution by setting PYTHONPATH=.
+  from project root. Resolved backend package import error.
+
+[2025-09-21 00:00] Added startImage and endImage fields to Exercise model and
+  database schema. Resolved TypeError during ingestion.
+
+[2025-09-21 00:00] Replaced emoji print statements with ASCII-safe tags to
+  prevent UnicodeEncodeError during output redirection on Windows.
+
+[2025-09-21 00:00] Cleared exercises table and re-ran ingestion pipeline.
+  Successfully ingested all exercise folders with image metadata.
+  Validated startImage and endImage path injection and DB persistence.
+
+[2025-09-22 00:00] Created backend/static/images/ folder and mounted /images
+  static route in main.py to serve exercise images via HTTP.
+
+================================================================================
+[2026-04-09 00:00] Project resumed after hiatus. Created CLAUDE.md with full
+  project context, stack, structure, commands, DB schema, API endpoints, and
+  CV goals. Reformatted CHANGELOG.txt with consistent timestamp format and
+  chronological ordering (oldest top, newest bottom).
+
+[2026-04-09 00:01] Added full development roadmap to CLAUDE.md.
+  Four phases defined with testable milestones:
+  - Phase 1: Codebase cleanup and stable foundation (dead code, pagination, design system)
+  - Phase 2: Core workout builder (search, exercise cards, sets/reps, localStorage persistence)
+  - Phase 3: User auth and backend persistence (JWT, User/WorkoutPlan models, CRUD)
+  - Phase 4: Polish and portfolio features (export, modals, responsive, env config)
+
+[2026-04-09 00:02] Dockerised the full stack.
+  Created:
+  - requirements.txt (pinned: fastapi, uvicorn, sqlalchemy, psycopg2-binary, python-dotenv, greenlet)
+  - backend/Dockerfile (python:3.11-slim, runs init_db then uvicorn on 0.0.0.0:8000)
+  - frontend/Dockerfile (node:20-alpine, runs Vite dev server with --host)
+  - docker-compose.yml (db/backend/frontend services, postgres healthcheck, volume mounts)
+  - .dockerignore (excludes .venv, __pycache__, node_modules)
+  - frontend/.env (VITE_API_URL=http://localhost:8000)
+  Modified:
+  - backend/models.py: DATABASE_URL now reads from os.environ, fallback to localhost
+  - frontend/src/components/ContactPage.jsx: replaced hardcoded localhost:8000 with VITE_API_URL
+  - frontend/src/components/ExerciseBuilder.jsx: replaced hardcoded localhost:8000 with VITE_API_URL
+  - frontend/vite.config.js: added server.host=true and server.port=5173 for Docker exposure
+  - CLAUDE.md: updated Dev Commands and added Docker Architecture section
+  Four phases defined with testable milestones:
+  - Phase 1: Codebase cleanup and stable foundation (dead code, pagination, design system)
+  - Phase 2: Core workout builder (search, exercise cards, sets/reps, localStorage persistence)
+  - Phase 3: User auth and backend persistence (JWT, User/WorkoutPlan models, CRUD)
+  - Phase 4: Polish and portfolio features (export, modals, responsive, env config)
+
+[2026-04-09 00:03] Merged improvements from Website_Frontend_DB_Merge iteration.
+  frontend/index.html: added Google Fonts preconnect + Roboto Slab import so
+    CSS font variables actually load.
+  backend/models.py: Contact model upgraded — name/email/message given proper
+    lengths (String(100), String(255), Text); added created_at DateTime with
+    server-side now() default.
+  backend/main.py: rewrote contact endpoint — replaced raw request.json()
+    parsing with Pydantic ContactIn/ContactOut schemas (EmailStr, field
+    validators, length limits); added Depends(get_db) dependency injection;
+    wrapped db.commit() in try/except SQLAlchemyError with rollback and HTTP
+    500; added GET /contact dev endpoint; removed all dead commented code;
+    Base.metadata.create_all() now called on startup.
+  requirements.txt: added email-validator==2.2.0 (required for EmailStr).
+  frontend/src/components/ContactPage.jsx: upgraded UX — AbortController with
+    10s timeout, button disabled during request, proper success/error status
+    classes, form resets on success.
+
+[2026-04-10 23:30] Phase 2 — Core Workout Builder implemented.
+  New components:
+  - ExerciseCard.jsx: exercise image, name, category/level badges, primary
+    muscles, Add to Workout button.
+  - WorkoutPanel.jsx: sticky right panel — sets/reps/rest inputs per exercise,
+    up/down reorder, remove, clear all, save with name, saved workouts
+    load/delete (localStorage persisted).
+  Rebuilt ExerciseBuilder.jsx:
+  - Debounced search (300ms) + muscle-group dropdown filter.
+  - Paginated exercise grid (20/page, Load more).
+  - Full workout state wired to WorkoutPanel.
+  index.css: two-column grid layout, exercise card styles, badges, workout
+    panel, entry inputs, all button variants.
+  docker-compose.yml: removed obsolete 'version' key (suppresses warning).
+
+[2026-04-11 00:00] Builder nav link, category filter, save persistence fix.
+  Layout.jsx: removed ~80 lines of commented-out dead code; added Builder link
+    to nav bar alongside Home, Packages, Contact.
+  backend/routes/exercises.py: added ?category= filter to GET /exercises
+    (exact match against Exercise.category). Categories: strength, cardio,
+    stretching, plyometrics, powerlifting, strongman, olympic weightlifting.
+  ExerciseBuilder.jsx: added category state + third dropdown filter; all three
+    filters (search, muscle, category) combine and debounce together; fixed
+    save — now only persists fields needed for display (id, name, category,
+    level, primaryMuscles, startImage) instead of full objects with instruction
+    arrays, preventing potential localStorage overflow; added try/catch.
+  WorkoutPanel.jsx: added "Saved!" confirmation message with 2s fade-out
+    animation after successful save.
+  index.css: added .save-confirm style + fadeOut keyframe animation.
+================================================================================

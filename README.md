@@ -1,6 +1,12 @@
 # The Crucible Training System
 
-A full-stack fitness coaching platform built as a CV portfolio project. Demonstrates real engineering decisions across the entire stack — custom workout builder, JWT auth, REST API, and a Dockerised multi-service architecture.
+A full-stack fitness coaching platform — custom workout builder, JWT auth, REST API, 873-exercise library, Dockerised across frontend, backend, and database.
+
+## About this project
+
+Built for dual purpose: as the platform I'll use for my own online personal-training business, and as a demonstration of real engineering decisions across the entire stack. The exercise library, workout builder, and auth flow are all working — the roadmap now is polish, deployment, and integration with social content tooling.
+
+Built by [Jack Tyson](https://github.com/JumpIntoTheFire) — full-stack developer, Level 3 PT, boxing coach at Kingscote ABC. Based in the UK.
 
 ## Stack
 

@@ -23,17 +23,25 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/cts_db
       EXERCISE_ROOT: /exercise_data
-      SECRET_KEY: change-this-secret-in-production-use-long-random-string
+      SECRET_KEY: ${SECRET_KEY:-dev-only-secret-not-for-production}
+      CORS_ORIGINS: http://localhost:5173,http://localhost:5174
+      DEBUG: "true"
     ports:
       - "8001:8000"
     volumes:
       - ./backend:/app/backend
-      # Raw exercise source — mounted read-only for ingestion script
-      - "C:\\Users\\cruci\\Coding_Projects\\Exercise data\\exercises:/exercise_data:ro"
+      # Exercise source data — set EXERCISE_DATA_PATH in .env to your local folder
+      - ${EXERCISE_DATA_PATH:-./exercise_data}:/exercise_data:ro
     depends_on:
       db:
         condition: service_healthy
     restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   frontend:
     build:
@@ -42,12 +50,17 @@ services:
     ports:
       - "5174:5173"
     volumes:
-      # Mount src and public for hot reload; keep node_modules from container
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
       - ./frontend/.env:/app/.env
     depends_on:
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5173/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
 
 volumes:
   postgres_data:

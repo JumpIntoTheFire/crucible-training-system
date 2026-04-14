@@ -189,3 +189,46 @@ Order: Oldest at top, newest at bottom.
     animation after successful save.
   index.css: added .save-confirm style + fadeOut keyframe animation.
 ================================================================================
+
+[2026-04-14 00:00] Phase 3 — Auth, DB persistence, and employer-facing code quality pass.
+
+  Auth system (Phase 3):
+  backend/auth.py: JWT utilities (HS256, 24h expiry), bcrypt password hashing,
+    get_current_user dependency. SECRET_KEY required in production — fails fast
+    with clear error if unset.
+  backend/routes/auth.py: POST /auth/register, POST /auth/login (OAuth2 form).
+    Accepts username or email at login. Returns access_token + username.
+  backend/routes/workouts.py: GET/POST/DELETE /workouts, JWT-protected.
+    WorkoutEntry schema validates sets (1-100), reps (1-100), rest (0-3600).
+  backend/models.py: Added User and WorkoutPlan (JSONB) models with cascade.
+  requirements.txt: Added python-jose[cryptography], passlib[bcrypt], python-multipart.
+  frontend/src/contexts/AuthContext.jsx: Auth state persisted to localStorage.
+  frontend/src/components/AuthPage.jsx: Login/register tabs with validation.
+  frontend/src/App.jsx: Cleaned dead code; AuthProvider wrapper; /auth route.
+  frontend/src/components/Layout.jsx: Login/logout in nav based on auth state.
+  frontend/src/components/ExerciseBuilder.jsx: DB save when logged in, localStorage fallback.
+  frontend/src/components/WorkoutPanel.jsx: isLoggedIn hint; saveError display.
+
+  Vite HMR: Added server.watch.usePolling: true for Docker on Windows.
+
+  Code quality & security (employer review pass):
+  - CORS origins env-configurable via CORS_ORIGINS variable
+  - Credentials never logged; structured logging throughout (no print statements)
+  - JWT expiry reduced to 24h; SECRET_KEY fail-fast in production
+  - Muscle and category inputs validated against whitelists (HTTP 400 on invalid)
+  - WorkoutEntry fields bounds-checked (sets/reps 1-100, rest 0-3600s)
+  - All commented-out dead code removed (App.jsx, main.jsx, init_db.py, schemas)
+  - Pydantic v2 model_config replaces deprecated class Config throughout
+  - docker-compose.yml: Windows absolute path replaced with EXERCISE_DATA_PATH env var
+  - Health checks added for backend and frontend containers
+  - .env.example documents all required environment variables
+
+  Documentation: Full README.md with stack, features, quick-start, env vars, API table.
+
+  Tests (27 total):
+  - backend/tests/test_auth.py — register, duplicates, weak passwords, login variants
+  - backend/tests/test_exercises.py — pagination, validation, whitelisting, search
+  - backend/tests/test_workouts.py — auth guard, CRUD, ownership, entry validation
+
+  CI/CD: .github/workflows/test.yml — pytest + ESLint on every push and PR.
+  GitHub: https://github.com/JumpIntoTheFire/crucible-training-system

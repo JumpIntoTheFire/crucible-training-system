@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import datetime, timedelta, timezone
 from typing import Optional
@@ -10,9 +11,26 @@ from sqlalchemy.orm import Session
 
 from backend.models import User, get_db
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-change-in-production")
+logger = logging.getLogger(__name__)
+
+# In production SECRET_KEY must be set via environment variable.
+# The app will refuse to start without it when DEBUG is not set.
+_raw_secret = os.environ.get("SECRET_KEY")
+_debug = os.environ.get("DEBUG", "").lower() in ("1", "true", "yes")
+
+if not _raw_secret:
+    if _debug:
+        _raw_secret = "dev-only-secret-not-for-production"
+        logger.warning("SECRET_KEY not set — using insecure default (DEBUG mode only)")
+    else:
+        raise RuntimeError(
+            "SECRET_KEY environment variable is required. "
+            "Generate one with: python -c \"import secrets; print(secrets.token_hex(32))\""
+        )
+
+SECRET_KEY: str = _raw_secret
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")

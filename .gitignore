@@ -12,6 +12,9 @@ backend/static/images/
 # Environment files — copy .env.example and fill in values
 frontend/.env
 .env
+# Keep examples in git
+!.env.example
+!frontend/.env.example
 
 # Node
 frontend/node_modules/

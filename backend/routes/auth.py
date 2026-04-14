@@ -1,3 +1,4 @@
+import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr, field_validator
@@ -7,7 +8,9 @@ from sqlalchemy.exc import IntegrityError
 from backend.models import User, get_db
 from backend.auth import hash_password, verify_password, create_access_token
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+logger = logging.getLogger(__name__)
+
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
 # ── Schemas ───────────────────────────────────────────────────────────────────
@@ -44,7 +47,13 @@ class TokenOut(BaseModel):
 
 # ── Routes ───────────────────────────────────────────────────────────────────
 
-@router.post("/register", response_model=TokenOut, status_code=201)
+@router.post(
+    "/register",
+    response_model=TokenOut,
+    status_code=201,
+    summary="Create a new account",
+    description="Register with a unique username and email. Returns a JWT on success.",
+)
 def register(payload: RegisterIn, db: Session = Depends(get_db)):
     user = User(
         username=payload.username,
@@ -61,13 +70,22 @@ def register(payload: RegisterIn, db: Session = Depends(get_db)):
             status_code=status.HTTP_409_CONFLICT,
             detail="Username or email already registered",
         )
+    logger.info("New user registered (id=%s, username=%s)", user.id, user.username)
     token = create_access_token(user.id)
     return TokenOut(access_token=token, user_id=user.id, username=user.username)
 
 
-@router.post("/login", response_model=TokenOut)
+@router.post(
+    "/login",
+    response_model=TokenOut,
+    summary="Login",
+    description=(
+        "Authenticate with username (or email) and password. "
+        "Returns a JWT valid for 24 hours."
+    ),
+)
 def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    # Accept username or email in the 'username' field
+    # Accept either username or email in the OAuth2 'username' field
     user = (
         db.query(User)
         .filter((User.username == form.username) | (User.email == form.username))
@@ -79,5 +97,6 @@ def login(form: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    logger.info("User logged in (id=%s)", user.id)
     token = create_access_token(user.id)
     return TokenOut(access_token=token, user_id=user.id, username=user.username)

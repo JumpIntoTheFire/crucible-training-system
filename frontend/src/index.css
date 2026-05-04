@@ -1035,6 +1035,203 @@ nav {
 }
 
 /* ================================================================
+   📱 Responsive — tablet + mobile overrides
+   Goal: zero horizontal scroll at 360px, touch targets ≥40px,
+   nav wraps cleanly, sticky panels drop. Capacitor-ready.
+   ================================================================ */
+@media (max-width: 768px) {
+  /* Reduce body padding so content uses screen real estate */
+  body {
+    padding: 12px;
+  }
+
+  /* ── Nav: wrap cleanly, tighter spacing ── */
+  .nav-list {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+  }
+
+  .nav-list a {
+    font-size: 0.9rem;
+    padding: 0.45rem 0.8rem;
+  }
+
+  .nav-auth {
+    margin-left: 0;
+    gap: 0.5rem;
+  }
+
+  .nav-username {
+    font-size: 0.85rem;
+    max-width: 6rem;
+  }
+
+  .btn-nav-login,
+  .btn-nav-logout {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.7rem;
+  }
+
+  /* Dropdown menu position can drift off-screen on narrow widths */
+  .dropdown-menu {
+    left: auto;
+    right: 0;
+  }
+
+  /* ── HomePage: pillar images shrink to fit ── */
+  img.pillar {
+    width: 220px;
+    height: 220px;
+  }
+
+  /* Hero CTA button — fit narrow viewport */
+  .btn-hero {
+    padding: 0.85rem 1.75rem;
+    font-size: 1rem;
+  }
+
+  /* ── Builder: layout already collapses to 1fr at 900px.
+        Below 768px, drop the workout-panel sticky positioning so it
+        becomes a stacked block under the library, not a viewport-tall
+        sidebar that scrolls oddly with the document. ── */
+  .workout-panel {
+    position: static;
+    max-height: none;
+    margin-top: 1.5rem;
+  }
+
+  .builder-layout {
+    padding: 0.75rem 0.25rem 2rem;
+  }
+
+  /* ── Touch targets bumped to 36–44px on mobile ── */
+  .btn-reorder,
+  .btn-remove {
+    width: 38px;
+    height: 38px;
+    font-size: 1rem;
+  }
+
+  .btn-add {
+    padding: 0.7rem;
+    font-size: 0.95rem;
+  }
+
+  .btn-load,
+  .btn-delete {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.9rem;
+  }
+
+  /* Save/Print buttons already padded acceptably; keep */
+
+  /* ── History page tighter on narrow ── */
+  .history-page {
+    padding: 1rem 0.5rem;
+  }
+
+  .history-header h1 {
+    font-size: 1.6rem;
+  }
+
+  /* ── Contact form padding sane ── */
+  .contact {
+    padding: 1.25rem;
+  }
+
+  /* ── Package pages: keep readable ── */
+  .package-highlights {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Tightest mobile (iPhone SE, small Android). Target: zero horizontal
+     scroll at 360px logical width. */
+  body {
+    padding: 8px;
+  }
+
+  .nav-list {
+    gap: 0.35rem;
+    padding: 0.4rem 0;
+  }
+
+  .nav-list a {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.65rem;
+  }
+
+  .btn-nav-login,
+  .btn-nav-logout {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.6rem;
+  }
+
+  .nav-username {
+    font-size: 0.8rem;
+    max-width: 5rem;
+  }
+
+  /* HomePage hero text / pillars compact */
+  img.pillar {
+    width: 180px;
+    height: 180px;
+  }
+
+  .btn-hero {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  /* Image-grid (already flex-column at 768px) — cap width tighter */
+  .image-grid img {
+    max-width: 240px;
+  }
+
+  /* Exercise grid: drop to single column. minmax(200px, 1fr) was getting
+     squeezed below 480px. */
+  .exercise-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-image {
+    height: 180px;
+  }
+
+  /* Filter row: stack vertically on tiny screens so nothing overflows */
+  .library-filters {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-input,
+  .muscle-select {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Hero h1 + workout-panel h2 sized down */
+  .hero h1,
+  .package-highlights h2 {
+    font-size: 1.4rem;
+  }
+
+  /* History card already collapses at 600px — no further change */
+
+  /* AuthPage form: account for narrow viewport.
+     AuthPage has no dedicated CSS (open follow-up); these rules apply
+     only to its inputs via the global form-input styling. Keep them
+     readable on tiny screens. */
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+}
+
+/* ================================================================
    🖨 Print stylesheet — formats workout for paper / PDF export
    ================================================================ */
 @media print {

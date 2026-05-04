@@ -27,6 +27,9 @@ export default function Layout() {
           </li>
 
           <li><Link to="/builder"><strong>Builder</strong></Link></li>
+          {auth && (
+            <li><Link to="/history"><strong>History</strong></Link></li>
+          )}
           <li><Link to="/contact"><strong>Contact</strong></Link></li>
 
           <li className="nav-auth">

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ExerciseCard from './ExerciseCard';
 import WorkoutPanel from './WorkoutPanel';
 import { useAuth } from '../contexts/AuthContext';
@@ -30,6 +31,8 @@ function loadLocalWorkouts() {
 
 export default function ExerciseBuilder() {
   const { auth } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [exercises, setExercises]   = useState([]);
   const [search, setSearch]         = useState('');
@@ -65,6 +68,18 @@ export default function ExerciseBuilder() {
   }, [auth]);
 
   useEffect(() => { fetchSavedWorkouts(); }, [fetchSavedWorkouts]);
+
+  // ── Load handoff: if /history navigated here with state.plan, populate the
+  //    builder with that plan and clear the navigation state so a subsequent
+  //    refresh doesn't re-load it.
+  useEffect(() => {
+    const planFromState = location.state?.plan;
+    if (planFromState) {
+      setWorkout(planFromState.exercises || []);
+      setWorkoutName(planFromState.name || '');
+      navigate(location.pathname, { replace: true, state: null });
+    }
+  }, [location.state, location.pathname, navigate]);
 
   // ── Fetch exercises ────────────────────────────────────────────────────────
 

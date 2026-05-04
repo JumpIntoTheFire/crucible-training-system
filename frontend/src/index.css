@@ -226,6 +226,66 @@ img.pillar {
   color: var(--primary-color);
 }
 
+/* ── Auth chunk in nav (username + logout, or login button) ── */
+.nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: 0.5rem;
+}
+
+.nav-username {
+  font-family: var(--font-ui);
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  /* Truncate long usernames so the Logout button doesn't get pushed off */
+  max-width: 8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* "Login" link when logged out — solid yellow, matches primary nav links */
+.btn-nav-login {
+  font-family: var(--font-ui);
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--secondary-color);
+  border-radius: 4px;
+  font-weight: 700;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-nav-login:hover,
+.btn-nav-login:focus {
+  color: var(--tertiary-color);
+  border: 2px solid var(--primary-color);
+}
+
+/* "Logout" button — outlined yellow, secondary action style */
+.btn-nav-logout {
+  font-family: var(--font-ui);
+  background-color: transparent;
+  color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
+  border-radius: 4px;
+  padding: 0.4rem 0.9rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-nav-logout:hover,
+.btn-nav-logout:focus {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
 /* ================================================================
    📦 Package & CTA Sections
    ================================================================ */
@@ -814,6 +874,127 @@ nav {
 }
 
 .btn-delete:hover { border-color: #e57373; color: #e57373; }
+
+/* ================================================================
+   🗂 Workout History Page (/history)
+   ================================================================ */
+.history-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.history-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.history-header h1 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  margin: 0 0 0.5rem;
+  color: var(--secondary-color);
+  letter-spacing: 0.04em;
+}
+
+.history-subtitle {
+  color: #888;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.history-loading,
+.history-error,
+.history-empty {
+  text-align: center;
+  font-family: var(--font-ui);
+  padding: 2rem 1rem;
+}
+
+.history-loading { color: var(--tertiary-color); }
+.history-error   { color: #c62828; }
+
+.history-empty {
+  color: #888;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.history-empty p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.history-card {
+  background-color: #111;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.history-card:hover {
+  border-color: var(--secondary-color);
+}
+
+.history-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-card-name {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  margin: 0 0 0.25rem;
+  color: var(--secondary-color);
+  letter-spacing: 0.02em;
+  /* truncate long names cleanly */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-card-meta {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0;
+}
+
+.history-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .history-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .history-card-actions {
+    justify-content: flex-end;
+  }
+}
 
 /* ================================================================
    🛠 Utility Classes

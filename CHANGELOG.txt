@@ -232,3 +232,29 @@ Order: Oldest at top, newest at bottom.
 
   CI/CD: .github/workflows/test.yml — pytest + ESLint on every push and PR.
   GitHub: https://github.com/JumpIntoTheFire/crucible-training-system
+
+[2026-05-03 23:55] Phase 4.1 — Workout export to printable view / PDF.
+  WorkoutPanel.jsx: Print-only <header className="print-header"> rendered at
+    top of the panel containing the workout name, "The Crucible Training
+    System" brand line, and UK-formatted date (en-GB, full month). Added a
+    .btn-print "Print / Export PDF" button below "Save Workout" that calls
+    window.print() and is disabled when the workout is empty. Wrapped the
+    on-screen <h2>My Workout</h2> in className="screen-only" so it's hidden
+    in print and the print-header takes its place.
+  index.css: Added .print-header { display: none } so the print header is
+    hidden on screen by default, .btn-print outlined-yellow style matching
+    .btn-load-more, and a full @media print { ... } block that:
+    - Resets body to white background, black text, no padding/margin
+    - Hides nav, .exercise-library, .save-section, .saved-workouts,
+      .btn-clear, .entry-controls, .screen-only
+    - Collapses .builder-layout to single-column block, strips .workout-panel
+      chrome (no border/shadow/sticky), 1.5cm page margin
+    - Reformats entries: borderless inputs render as plain text values,
+      page-break-inside: avoid on each .workout-entry
+    - Suppresses URL printing via a[href]::after { content: '' }
+  CLAUDE.md: drift-fix the stale "Current State (as of 2026-04-09)" block
+    to reflect that Phase 1-3 already shipped and Phase 4 is in progress.
+  Verified: Docker stack healthy (db/backend/frontend). Vite served both
+    edited modules without compile errors. ESLint clean on changed code
+    (3 pre-existing errors in unrelated files remain). Manual browser
+    smoke confirmed the PDF preview renders correctly.

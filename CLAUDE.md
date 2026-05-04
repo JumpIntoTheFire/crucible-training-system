@@ -149,13 +149,12 @@ set PYTHONPATH=. && python backend/scripts/ingest_exercises.py
 
 ## Roadmap
 
-### Current State (as of 2026-04-09)
-- Backend API functional: `/exercises` (873 exercises with images), `/contact`, static image serving
-- Frontend routes wired: Home, Packages (4 tiers), Contact, `/builder`
-- `ExerciseBuilder.jsx` is a raw list dump — no search, no builder, no workout logic
-- `App.jsx` contains ~200 lines of commented-out debug iterations (needs cleaning)
-- `main.py` and `schemas/exercises.py` also contain dead commented code
-- No auth, no user accounts, no saved workouts
+### Current State (as of 2026-05-03)
+- **Phase 1 ✓** — codebase cleaned, pagination + search + category filter live on `GET /exercises`, design system tokens in `index.css`.
+- **Phase 2 ✓** — workout builder shipped: debounced search, muscle + category filters, paginated grid, `ExerciseCard`, `WorkoutPanel` with sets/reps/rest/reorder/save/load.
+- **Phase 3 ✓** — JWT auth (HS256, 24h, bcrypt), `User` + `WorkoutPlan` (JSONB) models, `POST /auth/register|login`, JWT-protected `/workouts` CRUD, `AuthContext` + `AuthPage` on the frontend, `CORS_ORIGINS` env-driven, 27 backend tests + GitHub Actions CI.
+- **Phase 4 in progress** — 4.1 PDF/printable export shipped 2026-05-03. 4.2 exercise detail modal, 4.3 workout history page, 4.4 responsive sweep, 4.5 real package-page content (currently placeholder email/phone), 4.6 loading skeletons / error states still to do. 4.7 (`VITE_API_URL` everywhere) already complete.
+- Competitive landscape research at `[[notes/competitive-fitness-apps]]` — owner-as-PT moat, Caliber-style pricing ladder, PDF export is a wedge feature, wearables admin-blocked.
 
 ---
 

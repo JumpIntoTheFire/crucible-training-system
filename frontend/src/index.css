@@ -818,3 +818,186 @@ nav {
 /* ================================================================
    🛠 Utility Classes
    ================================================================ */
+
+/* Print-only header lives in the DOM but is hidden on screen. */
+.print-header {
+  display: none;
+}
+
+/* Marker for elements that should be visible on screen but hidden in print. */
+.screen-only {
+  /* default screen behaviour — overridden inside @media print below */
+}
+
+/* ── Print/Export button ── */
+.btn-print {
+  padding: 0.65rem;
+  background-color: transparent;
+  color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
+  border-radius: 6px;
+  font-weight: 700;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-print:hover:not(:disabled) {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+.btn-print:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ================================================================
+   🖨 Print stylesheet — formats workout for paper / PDF export
+   ================================================================ */
+@media print {
+  /* Reset page chrome to print-friendly white */
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-family: var(--font-base), 'Times New Roman', serif;
+  }
+
+  /* Hide everything that isn't the workout itself */
+  nav,
+  .exercise-library,
+  .save-section,
+  .saved-workouts,
+  .btn-clear,
+  .entry-controls,
+  .screen-only {
+    display: none !important;
+  }
+
+  /* The builder layout collapses to single column for print */
+  .builder-layout {
+    display: block !important;
+    grid-template-columns: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+
+  /* Strip workout-panel chrome — no border, no scroll, no sticky */
+  .workout-panel {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 1.5cm !important;
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  /* Show the print-only header */
+  .print-header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #000;
+  }
+
+  .print-title {
+    font-family: var(--font-heading), 'Helvetica', sans-serif;
+    font-size: 1.8rem;
+    margin: 0 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #000;
+  }
+
+  .print-meta {
+    font-size: 0.95rem;
+    color: #444;
+    margin: 0;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Workout list — clean printable rows */
+  .workout-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: block !important;
+  }
+
+  .workout-entry {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #ccc !important;
+    border-radius: 0 !important;
+    padding: 0.75rem 0 !important;
+    page-break-inside: avoid;
+  }
+
+  .entry-header {
+    display: flex !important;
+    justify-content: flex-start !important;
+    margin-bottom: 0.4rem;
+  }
+
+  .entry-name {
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    color: #000 !important;
+  }
+
+  /* Inputs render as labelled text values, no field borders */
+  .entry-inputs {
+    display: flex !important;
+    gap: 1.5rem !important;
+    padding-left: 0.5rem;
+  }
+
+  .entry-inputs label {
+    font-size: 0.9rem !important;
+    color: #000 !important;
+    flex: none !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+  }
+
+  .entry-inputs input {
+    background: transparent !important;
+    border: none !important;
+    color: #000 !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    padding: 0 !important;
+    width: auto !important;
+    min-width: 2.5em;
+    text-align: left !important;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* Hide the spinner on number inputs in print */
+  .entry-inputs input::-webkit-outer-spin-button,
+  .entry-inputs input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* No URL/page footer (browser default) is in the user's hands. We just
+     make sure links don't print as raw URLs */
+  a[href]::after {
+    content: '' !important;
+  }
+
+  /* Encourage page breaks at sensible spots */
+  h2, .print-header {
+    page-break-after: avoid;
+  }
+}

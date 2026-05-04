@@ -26,9 +26,21 @@ export default function WorkoutPanel({
     }
   };
 
+  const printedDate = new Date().toLocaleDateString('en-GB', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <aside className="workout-panel">
-      <h2>My Workout</h2>
+      {/* Print-only header — hidden on screen, visible when printing */}
+      <header className="print-header">
+        <h1 className="print-title">{workoutName || 'Untitled Workout'}</h1>
+        <p className="print-meta">The Crucible Training System &middot; {printedDate}</p>
+      </header>
+
+      <h2 className="screen-only">My Workout</h2>
 
       {workout.length === 0 ? (
         <p className="panel-empty">
@@ -116,6 +128,14 @@ export default function WorkoutPanel({
           disabled={!workoutName.trim() || workout.length === 0}
         >
           Save Workout
+        </button>
+        <button
+          className="btn-print"
+          onClick={() => window.print()}
+          disabled={workout.length === 0}
+          aria-label="Print or export workout to PDF"
+        >
+          Print / Export PDF
         </button>
         {saveMsg && <p className="save-confirm">{saveMsg}</p>}
         {saveError && <p className="form-status error">{saveError}</p>}

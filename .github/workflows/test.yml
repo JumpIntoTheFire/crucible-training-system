@@ -42,6 +42,27 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt pytest httpx
 
+      - name: Audit dependencies for known vulnerabilities
+        # Structural protection against the regression class that produced the
+        # 2026-05-04 bcrypt incident (passlib[bcrypt]==1.7.4 silently pulled
+        # bcrypt 4.x as an unpinned transitive — see commit ee5c112).
+        #
+        # Per-CVE whitelist rationale:
+        #   CVE-2025-8869 / CVE-2026-1703 / CVE-2026-3219 — pip itself; build tool, not runtime app dep
+        #   CVE-2026-24049                                 — wheel; build tool, not runtime app dep
+        #   CVE-2024-47874 / CVE-2025-54121                — starlette transitive of fastapi 0.115;
+        #                                                    fix requires fastapi major bump (0.115 → 0.136),
+        #                                                    tracked separately. Re-evaluate when fastapi bumps.
+        run: |
+          pip install pip-audit
+          pip-audit --strict \
+            --ignore-vuln CVE-2025-8869 \
+            --ignore-vuln CVE-2026-1703 \
+            --ignore-vuln CVE-2026-3219 \
+            --ignore-vuln CVE-2026-24049 \
+            --ignore-vuln CVE-2024-47874 \
+            --ignore-vuln CVE-2025-54121
+
       - name: Run tests
         run: pytest backend/tests/ -v --tb=short
 

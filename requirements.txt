@@ -2,13 +2,22 @@ fastapi==0.115.0
 uvicorn==0.30.6
 sqlalchemy==2.0.43
 psycopg2-binary==2.9.10
-python-dotenv==1.1.1
+# python-dotenv: bumped 1.1.1 → 1.2.2 to address CVE-2026-28684 (flagged by pip-audit).
+python-dotenv==1.2.2
 greenlet==3.2.4
 email-validator==2.2.0
-python-jose[cryptography]==3.3.0
+# python-jose: bumped 3.3.0 → 3.5.0 to address PYSEC-2024-232 + PYSEC-2024-233 (JWT lib CVEs).
+# 3.5.0 (vs the minimum-fix 3.4.0) also supports pyasn1>=0.6, which is needed for the
+# pyasn1 CVE-2026-30922 override pinned below.
+python-jose[cryptography]==3.5.0
 passlib[bcrypt]==1.7.4
 # passlib 1.7.4's startup probe (`detect_wrap_bug`) hashes a >72-byte string,
 # which bcrypt>=4.0 rejects with ValueError. Pinned to <4.0 until passlib 1.8
 # ships (or until we switch to using the bcrypt library directly).
 bcrypt<4.0
-python-multipart==0.0.9
+# python-multipart: bumped 0.0.9 → 0.0.26 to address CVE-2024-53981 + CVE-2026-24486 + CVE-2026-40347.
+python-multipart==0.0.26
+# Explicit override for a transitive dep — python-jose pulls pyasn1, and pip-audit
+# flagged pyasn1 0.4.8 for CVE-2026-30922. 0.6.3 is the fix. (Same pin DriveCoach
+# uses for the same reason — see notes/passlib-bcrypt-pin.md re: pip-audit hygiene.)
+pyasn1==0.6.3

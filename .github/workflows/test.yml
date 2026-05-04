@@ -27,7 +27,12 @@ jobs:
           --health-retries 10
 
     env:
+      # CI's DATABASE_URL and TEST_DATABASE_URL both point at cts_test —
+      # there's no separate "prod" DB in CI, so they can equal each other.
+      # The conftest safety check catches the dangerous case (TEST_DATABASE_URL
+      # accidentally equal to a real prod DATABASE_URL).
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/cts_test
+      TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/cts_test
       SECRET_KEY: ci-test-secret-key-not-for-production
       DEBUG: "true"
 

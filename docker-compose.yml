@@ -22,6 +22,9 @@ services:
       dockerfile: backend/Dockerfile
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/cts_db
+      # Tests must point at a separate DB so drop_all() teardown can't wipe
+      # the live cts_db. See backend/tests/conftest.py for the safety check.
+      TEST_DATABASE_URL: postgresql://postgres:postgres@db:5432/cts_test
       EXERCISE_ROOT: /exercise_data
       SECRET_KEY: ${SECRET_KEY:-dev-only-secret-not-for-production}
       CORS_ORIGINS: http://localhost:5173,http://localhost:5174

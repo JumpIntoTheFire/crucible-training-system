@@ -7,4 +7,8 @@ greenlet==3.2.4
 email-validator==2.2.0
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
+# passlib 1.7.4's startup probe (`detect_wrap_bug`) hashes a >72-byte string,
+# which bcrypt>=4.0 rejects with ValueError. Pinned to <4.0 until passlib 1.8
+# ships (or until we switch to using the bcrypt library directly).
+bcrypt<4.0
 python-multipart==0.0.9

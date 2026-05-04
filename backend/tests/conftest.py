@@ -36,11 +36,16 @@ if not TEST_DATABASE_URL:
     TEST_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/cts_test"
 
 if DATABASE_URL and TEST_DATABASE_URL == DATABASE_URL:
-    raise RuntimeError(
-        f"TEST_DATABASE_URL must differ from DATABASE_URL "
-        f"(both currently point at {TEST_DATABASE_URL!r}). "
-        f"Tests run drop_all() on teardown."
-    )
+    # CI sets DATABASE_URL == TEST_DATABASE_URL = cts_test by design (no
+    # separate prod DB exists in the workflow). Equality is only dangerous
+    # when the URL points at a non-test database. Heuristic: if the URL
+    # contains `_test`, treat it as an intentional test DB.
+    if "_test" not in TEST_DATABASE_URL:
+        raise RuntimeError(
+            f"TEST_DATABASE_URL must differ from DATABASE_URL "
+            f"(both currently point at {TEST_DATABASE_URL!r}, which doesn't "
+            f"look like a test database). Tests run drop_all() on teardown."
+        )
 
 engine = create_engine(TEST_DATABASE_URL)
 TestingSessionLocal = sessionmaker(bind=engine)

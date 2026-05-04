@@ -1,6 +1,5 @@
-import { createContext, useContext, useState, useCallback } from 'react';
-
-const AuthContext = createContext(null);
+import { useState, useCallback } from 'react';
+import { AuthContext } from './auth-context';
 
 function loadStoredAuth() {
   try {
@@ -29,8 +28,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  return useContext(AuthContext);
 }

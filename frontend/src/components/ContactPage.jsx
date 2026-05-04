@@ -39,7 +39,7 @@ export default function ContactPage() {
         setStatus(err?.detail || `Request failed (${res.status})`);
         setStatusType('error');
       }
-    } catch (err) {
+    } catch {
       clearTimeout(timeout);
       setStatus('Network error. Please try again.');
       setStatusType('error');

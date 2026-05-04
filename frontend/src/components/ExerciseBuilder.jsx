@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ExerciseCard from './ExerciseCard';
 import WorkoutPanel from './WorkoutPanel';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/auth-context';
 
 const API = import.meta.env.VITE_API_URL;
 const LIMIT = 20;
@@ -172,7 +172,7 @@ export default function ExerciseBuilder() {
         });
         if (!res.ok) throw new Error('Failed to save');
         await fetchSavedWorkouts();
-      } catch (e) {
+      } catch {
         setSaveError('Could not save to account. Try again.');
       }
     } else {

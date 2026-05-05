@@ -1,11 +1,16 @@
+import { useState } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/auth-context';
 
 export default function Layout() {
   const { auth, logout } = useAuth();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const closeMenu = () => setMenuOpen(false);
 
   const handleLogout = () => {
+    closeMenu();
     logout();
     navigate('/');
   };
@@ -13,24 +18,32 @@ export default function Layout() {
   return (
     <div>
       <nav>
-        <ul className="nav-list">
-          <li><Link to="/"><strong>Home</strong></Link></li>
+        <button
+          className="nav-toggle"
+          aria-label="Toggle menu"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((o) => !o)}
+        >
+          ☰
+        </button>
+        <ul className={`nav-list ${menuOpen ? 'nav-list--open' : ''}`}>
+          <li><Link to="/" onClick={closeMenu}><strong>Home</strong></Link></li>
 
           <li className="dropdown">
-            <Link to="/packages"><strong>Packages</strong></Link>
+            <Link to="/packages" onClick={closeMenu}><strong>Packages</strong></Link>
             <ul className="dropdown-menu">
-              <li><Link to="/packages/basic"><strong>Basic</strong></Link></li>
-              <li><Link to="/packages/premium"><strong>Premium</strong></Link></li>
-              <li><Link to="/packages/ultra"><strong>Ultra</strong></Link></li>
-              <li><Link to="/packages/elite"><strong>Elite</strong></Link></li>
+              <li><Link to="/packages/basic" onClick={closeMenu}><strong>Basic</strong></Link></li>
+              <li><Link to="/packages/premium" onClick={closeMenu}><strong>Premium</strong></Link></li>
+              <li><Link to="/packages/ultra" onClick={closeMenu}><strong>Ultra</strong></Link></li>
+              <li><Link to="/packages/elite" onClick={closeMenu}><strong>Elite</strong></Link></li>
             </ul>
           </li>
 
-          <li><Link to="/builder"><strong>Builder</strong></Link></li>
+          <li><Link to="/builder" onClick={closeMenu}><strong>Builder</strong></Link></li>
           {auth && (
-            <li><Link to="/history"><strong>History</strong></Link></li>
+            <li><Link to="/history" onClick={closeMenu}><strong>History</strong></Link></li>
           )}
-          <li><Link to="/contact"><strong>Contact</strong></Link></li>
+          <li><Link to="/contact" onClick={closeMenu}><strong>Contact</strong></Link></li>
 
           <li className="nav-auth">
             {auth ? (
@@ -39,7 +52,7 @@ export default function Layout() {
                 <button className="btn-nav-logout" onClick={handleLogout}>Logout</button>
               </>
             ) : (
-              <Link to="/auth" className="btn-nav-login">Login</Link>
+              <Link to="/auth" className="btn-nav-login" onClick={closeMenu}>Login</Link>
             )}
           </li>
         </ul>

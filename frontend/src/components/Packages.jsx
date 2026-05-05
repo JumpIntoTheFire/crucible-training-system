@@ -2,13 +2,14 @@ import { Outlet, Link } from 'react-router-dom';
 
 export default function Packages() {
   return (
-    <div>
-      <h1>Our Packages</h1>
-      <nav>
-        <Link to="basic">Basic</Link>
-        <Link to="premium">Premium</Link>
-        <Link to="ultra">Ultra</Link>
-        <Link to="elite">Elite</Link>
+    <div className="packages-page">
+      <h1 className="packages-title">Our Packages</h1>
+      <p className="packages-subtitle">Pick the tier that fits where you are right now.</p>
+      <nav className="tier-nav" aria-label="Package tiers">
+        <Link to="basic" className="tier-link">Basic</Link>
+        <Link to="premium" className="tier-link">Premium</Link>
+        <Link to="ultra" className="tier-link">Ultra</Link>
+        <Link to="elite" className="tier-link">Elite</Link>
       </nav>
       <Outlet />
     </div>
